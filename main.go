@@ -19,5 +19,5 @@ func main() {
 		log.Fatalf("Error running Newman: %v", err)
 	}
 
-	analyze.AnalyzeEndpoints(rootDir, newmanReportPath)
+	analyze.AnalyzeEndpoints(rootDir, newmanReportPath) //newman
 }
