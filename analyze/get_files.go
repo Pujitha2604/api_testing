@@ -1,7 +1,6 @@
 package analyze
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -19,7 +18,7 @@ func getAllGoFiles(dir string) ([]string, error) {
 		return nil
 	})
 	if err != nil {
-		return nil, fmt.Errorf("error walking directory %s: %v", dir, err)
+		return nil, err
 	}
-	return goFiles, err
+	return goFiles, nil
 }

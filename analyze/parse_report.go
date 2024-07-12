@@ -7,6 +7,33 @@ import (
 	"strings"
 )
 
+type NewmanReport struct {
+	Run Run `json:"run"`
+}
+
+type Run struct {
+	Executions []Execution `json:"executions"`
+}
+
+type Execution struct {
+	Item     Item     `json:"item"`
+	Response Response `json:"response"`
+}
+
+type Item struct {
+	Name    string  `json:"name"`
+	Request Request `json:"request"`
+}
+
+type Request struct {
+	Method string `json:"method"`
+	URL    URL    `json:"url"`
+}
+
+type URL struct {
+	Path []string `json:"path"`
+}
+
 func parseNewmanReport(reportPath string) (map[string]int, error) {
 	data, err := os.ReadFile(reportPath)
 	if err != nil {
@@ -28,5 +55,5 @@ func parseNewmanReport(reportPath string) (map[string]int, error) {
 		endpoints[pathStr] = exec.Response.Code
 	}
 
-	return endpoints, err
+	return endpoints, nil
 }

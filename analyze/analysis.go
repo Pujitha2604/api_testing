@@ -4,6 +4,7 @@ import (
 	"log"
 )
 
+
 func Analysis(rootDir string, newmanReportPath string) {
 	allEndpoints := make(map[string]Endpoint)
 	handlerFiles, err := getAllGoFiles(rootDir)
