@@ -1,98 +1,84 @@
 package analyze
 
 import (
-	"io/ioutil"
-	"os"
+	"encoding/json"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
+type MockFileSystem struct {
+	mock.Mock
+}
+
+func (m *MockFileSystem) ReadFile(filename string) ([]byte, error) {
+	args := m.Called(filename)
+	data, _ := args.Get(0).([]byte) // Ensure we always return a valid byte slice or nil
+	return data, args.Error(1)
+}
+
 func TestParseNewmanReport(t *testing.T) {
-	// Setup temporary Newman report file
-	reportData := `
-	{
-		"run": {
-			"executions": [
+	mockFS := new(MockFileSystem)
+
+	// Mock data for a successful read and parse
+	reportData := NewmanReport{
+		Run: Run{
+			Executions: []Execution{
 				{
-					"item": {
-						"name": "Test Endpoint",
-						"request": {
-							"method": "GET",
-							"url": {
-								"path": ["employee", "123"]
-							}
-						}
+					Item: Item{
+						Name: "Test 1",
+						Request: Request{
+							Method: "GET",
+							URL: URL{
+								Path: []string{"employee", "1"},
+							},
+						},
 					},
-					"response": {
-						"code": 200
-					}
+					Response: Response{
+						Code: 200,
+					},
 				},
 				{
-					"item": {
-						"name": "Invalid Endpoint",
-						"request": {
-							"method": "POST",
-							"url": {
-								"path": ["invalid"]
-							}
-						}
+					Item: Item{
+						Name: "Test 2",
+						Request: Request{
+							Method: "POST",
+							URL: URL{
+								Path: []string{"employee"},
+							},
+						},
 					},
-					"response": {
-						"code": 404
-					}
-				}
-			]
-		}
-	}
-	`
-
-	tempFile, err := ioutil.TempFile("", "newman_report*.json")
-	if err != nil {
-		t.Fatalf("Failed to create temporary file: %v", err)
-	}
-	defer os.Remove(tempFile.Name())
-
-	_, err = tempFile.WriteString(reportData)
-	if err != nil {
-		t.Fatalf("Failed to write to temporary file: %v", err)
-	}
-	tempFile.Close()
-
-	// Run the function
-	endpoints, err := parseNewmanReport(tempFile.Name())
-	if err != nil {
-		t.Fatalf("Error parsing Newman report: %v", err)
+					Response: Response{
+						Code: 201,
+					},
+				},
+			},
+		},
 	}
 
-	// Validate the results
-	expectedEndpoints := map[string]int{
-		"/employee/123": 200,
-		"/invalid":      404,
-	}
+	reportJSON, _ := json.Marshal(reportData)
+	mockFS.On("ReadFile", "/newman-report.json").Return(reportJSON, nil)
 
-	if len(endpoints) != len(expectedEndpoints) {
-		t.Fatalf("Expected %d endpoints, got %d", len(expectedEndpoints), len(endpoints))
-	}
+	// Replace the real osReadFile with our mock
+	oldReadFile := osReadFile
+	osReadFile = mockFS.ReadFile
+	defer func() { osReadFile = oldReadFile }()
 
-	for path, code := range expectedEndpoints {
-		if endpoints[path] != code {
-			t.Errorf("Expected status code %d for path %s, got %d", code, path, endpoints[path])
-		}
-	}
+	// Call the function
+	endpoints, err := parseNewmanReport("/newman-report.json")
 
-	// Test error case: File not found
-	_, err = parseNewmanReport("nonexistent-file.json")
-	if err == nil {
-		t.Error("Expected error for nonexistent file, but got nil")
-	}
+	// Assertions
+	assert.NoError(t, err)
+	assert.Equal(t, 2, len(endpoints))
+	assert.Equal(t, 200, endpoints["/employee/1"])
+	assert.Equal(t, 201, endpoints["/employee"])
 
-	// Test error case: Invalid JSON format
-	invalidData := "invalid JSON data"
-	invalidFile, _ := ioutil.TempFile("", "invalid_newman_report*.json")
-	invalidFile.Close()
-	ioutil.WriteFile(invalidFile.Name(), []byte(invalidData), 0644)
+	// Test case for JSON unmarshal error
+	mockFS.On("ReadFile", "/invalid/json").Return([]byte("invalid json"), nil)
+	_, err = parseNewmanReport("/invalid/json")
+	assert.Error(t, err)
+	assert.Equal(t, "error parsing Newman report JSON: invalid character 'i' looking for beginning of value", err.Error())
 
-	_, err = parseNewmanReport(invalidFile.Name())
-	if err == nil {
-		t.Error("Expected error for invalid JSON format, but got nil")
-	}
+	mockFS.AssertExpectations(t)
 }

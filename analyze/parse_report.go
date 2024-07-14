@@ -2,9 +2,9 @@ package analyze
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 	"os"
-	"strings"
+	"path"
 )
 
 type NewmanReport struct {
@@ -34,25 +34,24 @@ type URL struct {
 	Path []string `json:"path"`
 }
 
-func parseNewmanReport(reportPath string) (map[string]int, error) {
-	data, err := os.ReadFile(reportPath)
+var osReadFile = os.ReadFile
+
+func parseNewmanReport(filename string) (map[string]int, error) {
+	data, err := osReadFile(filename)
 	if err != nil {
-		return nil, fmt.Errorf("error reading Newman report file: %v", err)
+		return nil, err
 	}
 
 	var report NewmanReport
-	if err := json.Unmarshal(data, &report); err != nil {
-		return nil, fmt.Errorf("error parsing Newman report JSON: %v", err)
+	err = json.Unmarshal(data, &report)
+	if err != nil {
+		return nil, errors.New("error parsing Newman report JSON: " + err.Error())
 	}
 
 	endpoints := make(map[string]int)
-	for _, exec := range report.Run.Executions {
-		path := exec.Item.Request.URL.Path
-		if len(path) > 0 && path[0] == "employee" && len(path) > 1 && path[1] != "" {
-			path = path[:1]
-		}
-		pathStr := "/" + strings.Join(path, "/")
-		endpoints[pathStr] = exec.Response.Code
+	for _, execution := range report.Run.Executions {
+		path := "/" + path.Join(execution.Item.Request.URL.Path...)
+		endpoints[path] = execution.Response.Code
 	}
 
 	return endpoints, nil

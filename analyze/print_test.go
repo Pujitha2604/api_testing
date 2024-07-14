@@ -1,58 +1,71 @@
 package analyze
 
-// import (
-// 	"bytes"
-// 	"testing"
+import (
+	"bytes"
+	"io"
+	"os"
+	"testing"
 
-// 	"github.com/jedib0t/go-pretty/v6/table"
-	
-// )
+	"github.com/stretchr/testify/assert"
+)
 
-// // MockTableWriter implements the table.Writer interface for capturing output
-// type MockTableWriter struct {
-// 	buf bytes.Buffer
-// }
+func TestPrintEndpointsTable(t *testing.T) {
+	// Mock data
+	allEndpoints := map[string]Endpoint{
+		"1": {Method: "GET", Path: "/endpoint1", Result: "Covered"},
+		"2": {Method: "POST", Path: "/endpoint2", Result: "Not Covered"},
+	}
+	newmanReportPath := "/path/to/newman-report.json"
 
-// func (m *MockTableWriter) SetOutputMirror(outputMirror table.WriterOptions) {}
+	// Create a pipe to capture stdout
+	reader, writer, err := os.Pipe()
+	if err != nil {
+		t.Fatalf("Failed to create pipe: %v", err)
+	}
 
-// func (m *MockTableWriter) AppendHeader(row table.Row) {}
+	// Save the original stdout
+	oldStdout := os.Stdout
 
-// func (m *MockTableWriter) AppendRow(row table.Row) {
-// 	m.buf.WriteString("| ")
-// 	for _, cell := range row {
-// 		m.buf.WriteString(cell.(string))
-// 		m.buf.WriteString(" | ")
-// 	}
-// 	m.buf.WriteString("\n")
-// }
+	// Set the stdout to our pipe writer
+	os.Stdout = writer
 
-// func (m *MockTableWriter) Render() {
-// 	// Do nothing in the mock
-// }
+	// Ensure we restore stdout after the test
+	defer func() {
+		os.Stdout = oldStdout
+		writer.Close()
+		reader.Close()
+	}()
 
-// func TestPrintEndpointsTable(t *testing.T) {
-// 	// Mock data
-// 	allEndpoints := map[string]Endpoint{
-// 		"/endpoint1": {Method: "GET", Path: "/endpoint1", Result: "Covered"},
-// 		"/endpoint2": {Method: "POST", Path: "/endpoint2", Result: "Not Covered"},
-// 	}
+	// Run the function in a separate goroutine
+	done := make(chan struct{})
+	go func() {
+		printEndpointsTable(allEndpoints, newmanReportPath)
+		writer.Close()
+		close(done)
+	}()
 
-// 	// Capture output using MockTableWriter
-// 	mockWriter := &MockTableWriter{}
+	// Read the captured output
+	var mockBuffer bytes.Buffer
+	if _, err := io.Copy(&mockBuffer, reader); err != nil {
+		t.Fatalf("Failed to read captured output: %v", err)
+	}
 
-// 	// Run the function
-// 	newmanReportPath := "/path/to/newman/report.json"
-// 	printEndpointsTable(allEndpoints, newmanReportPath)
+	// Wait for the goroutine to finish
+	<-done
 
-// 	// Validate the output
-// 	expectedOutput := `| # | METHOD | PATH      | RESULT      | SOURCE                   | 
-// | 1 | GET    | /endpoint1| Covered     | /path/to/newman/report.json| 
-// | 2 | POST   | /endpoint2| Not Covered |                           | 
-// `
+	// Get the output from the buffer
+	output := mockBuffer.String()
 
-// 	actualOutput := mockWriter.buf.String()
-
-// 	if actualOutput != expectedOutput {
-// 		t.Errorf("Expected output:\n%s\n\nActual output:\n%s", expectedOutput, actualOutput)
-// 	}
-// }
+	// Assertions
+	assert.Contains(t, output, "#")
+	assert.Contains(t, output, "METHOD")
+	assert.Contains(t, output, "PATH")
+	assert.Contains(t, output, "RESULT")
+	assert.Contains(t, output, "SOURCE")
+	assert.Contains(t, output, "GET")
+	assert.Contains(t, output, "/endpoint1")
+	assert.Contains(t, output, "Covered")
+	assert.Contains(t, output, "POST")
+	assert.Contains(t, output, "/endpoint2")
+	assert.Contains(t, output, "Not Covered")
+}
