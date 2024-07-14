@@ -12,8 +12,8 @@ func main() {
 	}
 
 	rootDir := os.Args[1]
-	collectionFile := "C:/Users/Relanto/Downloads/api_testing/api_testing/collection.json"
-	newmanReportPath := "C:/Users/Relanto/Downloads/api_testing/api_testing/newman-report.json"
+	collectionFile := "C:/Users/Rekanto/Desktop/api_testing/collection.json"
+	newmanReportPath := "C:/Users/Rekanto/Desktop/api_testing/newman-report.json"
 
 	if err := analyze.RunNewman(collectionFile, newmanReportPath); err != nil {
 		log.Fatalf("Error running Newman: %v", err)
