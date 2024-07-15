@@ -19,9 +19,7 @@ type Execution struct {
 	Item     Item     `json:"item"`
 	Response Response `json:"response"`
 }
-type Response struct {
-	Code int `json:"code"`
-}
+
 type Item struct {
 	Name    string  `json:"name"`
 	Request Request `json:"request"`

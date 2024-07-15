@@ -5,7 +5,7 @@
     },
     "item": [
       {
-        "id": "6a1effb4-ecc8-427c-8089-8feef932af8c",
+        "id": "bb48e2a1-498b-4901-94bd-40e59cd4796a",
         "name": "RegisterEmployee",
         "request": {
           "url": {
@@ -35,7 +35,7 @@
         "event": []
       },
       {
-        "id": "997dd6a9-db3d-48d6-bc34-13c3a0fdcaa8",
+        "id": "bc8cf717-414e-4357-85fc-0ee6cea7e63b",
         "name": "EmployeeById",
         "request": {
           "url": {
@@ -57,7 +57,7 @@
         "event": []
       },
       {
-        "id": "476499f7-84a4-4ec1-973b-06e15da73dca",
+        "id": "52ac776e-5d95-4348-b612-60991d617e2a",
         "name": "Employees",
         "request": {
           "url": {
@@ -91,11 +91,11 @@
     }
   },
   "environment": {
-    "id": "d481eecd-6b6e-4427-95f0-b3cf72db07b8",
+    "id": "696f1c06-46ef-4400-bec4-b44a222ae8a7",
     "values": []
   },
   "globals": {
-    "id": "4a445af0-d44b-4990-987b-d5da45c67ac4",
+    "id": "219a54b9-024e-4a42-847d-45b33785ba00",
     "values": []
   },
   "run": {
@@ -147,10 +147,10 @@
       }
     },
     "timings": {
-      "responseAverage": 60,
-      "responseMin": 36,
-      "responseMax": 105,
-      "responseSd": 31.843366656181317,
+      "responseAverage": 61.666666666666664,
+      "responseMin": 41,
+      "responseMax": 102,
+      "responseSd": 28.522895287041873,
       "dnsAverage": 0,
       "dnsMin": 0,
       "dnsMax": 0,
@@ -159,8 +159,8 @@
       "firstByteMin": 0,
       "firstByteMax": 0,
       "firstByteSd": 0,
-      "started": 1721021044129,
-      "completed": 1721021044498
+      "started": 1721028597612,
+      "completed": 1721028597998
     },
     "executions": [
       {
@@ -173,11 +173,11 @@
           "eof": false,
           "bof": true,
           "cr": false,
-          "ref": "7e6bfad5-2029-41cc-905b-3836f0cd9764",
-          "httpRequestId": "b96002f1-95d6-4923-96dc-5945810eff07"
+          "ref": "0e216b6c-e553-42c7-8e9e-d30183ebfc2e",
+          "httpRequestId": "61a6f4e9-8e6d-4a8d-b924-38111b77e3e1"
         },
         "item": {
-          "id": "6a1effb4-ecc8-427c-8089-8feef932af8c",
+          "id": "bb48e2a1-498b-4901-94bd-40e59cd4796a",
           "name": "RegisterEmployee",
           "request": {
             "url": {
@@ -242,7 +242,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "89ed6bf7-004f-4057-823f-8a9872f73fca",
+              "value": "b2940f44-58bb-4931-b971-f98f15862053",
               "system": true
             },
             {
@@ -278,7 +278,7 @@
           }
         },
         "response": {
-          "id": "ded805b0-e251-4c76-a3e8-f1ac79109aec",
+          "id": "bbf719e4-eb50-4d37-9945-3f437e44cdd6",
           "status": "Conflict",
           "code": 409,
           "header": [
@@ -292,7 +292,7 @@
             },
             {
               "key": "Date",
-              "value": "Mon, 15 Jul 2024 05:24:04 GMT"
+              "value": "Mon, 15 Jul 2024 07:29:57 GMT"
             },
             {
               "key": "Content-Length",
@@ -345,22 +345,22 @@
             ]
           },
           "cookie": [],
-          "responseTime": 105,
+          "responseTime": 102,
           "responseSize": 40
         },
-        "id": "6a1effb4-ecc8-427c-8089-8feef932af8c"
+        "id": "bb48e2a1-498b-4901-94bd-40e59cd4796a"
       },
       {
         "cursor": {
-          "ref": "ffc3479b-389b-4f2f-a9bd-1323dd2c39ab",
+          "ref": "28d75b43-828c-46c5-96d3-d9981688d9e0",
           "length": 3,
           "cycles": 1,
           "position": 1,
           "iteration": 0,
-          "httpRequestId": "47c5a335-234c-44fe-8a22-94fec75807cf"
+          "httpRequestId": "62a67ced-c928-4260-aea1-62d199c01214"
         },
         "item": {
-          "id": "997dd6a9-db3d-48d6-bc34-13c3a0fdcaa8",
+          "id": "bc8cf717-414e-4357-85fc-0ee6cea7e63b",
           "name": "EmployeeById",
           "request": {
             "url": {
@@ -413,7 +413,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "8fec21c2-c1d8-4fea-817e-35ad38db0b41",
+              "value": "b22568cb-11e0-49c7-b26d-1129b8e031df",
               "system": true
             },
             {
@@ -435,13 +435,13 @@
           "method": "GET"
         },
         "response": {
-          "id": "6a01d6e5-8739-4622-b4cc-c0d17e600483",
+          "id": "d36b4861-cbc4-4fbe-ab7c-fe22b7392ee0",
           "status": "OK",
           "code": 200,
           "header": [
             {
               "key": "Date",
-              "value": "Mon, 15 Jul 2024 05:24:04 GMT"
+              "value": "Mon, 15 Jul 2024 07:29:57 GMT"
             },
             {
               "key": "Content-Length",
@@ -581,22 +581,22 @@
             ]
           },
           "cookie": [],
-          "responseTime": 36,
+          "responseTime": 41,
           "responseSize": 123
         },
-        "id": "997dd6a9-db3d-48d6-bc34-13c3a0fdcaa8"
+        "id": "bc8cf717-414e-4357-85fc-0ee6cea7e63b"
       },
       {
         "cursor": {
-          "ref": "7725e8d4-6c03-4f60-89fd-9c9c268d3bf4",
+          "ref": "cb4ef3b3-020e-4983-be7a-5fed8814d867",
           "length": 3,
           "cycles": 1,
           "position": 2,
           "iteration": 0,
-          "httpRequestId": "9978ef10-58db-4093-885b-64c2d9603e0d"
+          "httpRequestId": "72227c25-cbf2-48f5-9e7b-c602ea55e096"
         },
         "item": {
-          "id": "476499f7-84a4-4ec1-973b-06e15da73dca",
+          "id": "52ac776e-5d95-4348-b612-60991d617e2a",
           "name": "Employees",
           "request": {
             "url": {
@@ -647,7 +647,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "11fef309-b0bf-4d7c-99f7-45af2c8d7c21",
+              "value": "b36c1538-be6c-4fdf-be12-781bfff1efad",
               "system": true
             },
             {
@@ -669,13 +669,13 @@
           "method": "GET"
         },
         "response": {
-          "id": "f1b2e6dd-6bba-40b9-bb89-bdd3b2b67745",
+          "id": "a27a8046-138e-4e99-b18f-6fb53352269c",
           "status": "OK",
           "code": 200,
           "header": [
             {
               "key": "Date",
-              "value": "Mon, 15 Jul 2024 05:24:04 GMT"
+              "value": "Mon, 15 Jul 2024 07:29:57 GMT"
             },
             {
               "key": "Content-Type",
@@ -8437,10 +8437,10 @@
             ]
           },
           "cookie": [],
-          "responseTime": 39,
+          "responseTime": 42,
           "responseSize": 7745
         },
-        "id": "476499f7-84a4-4ec1-973b-06e15da73dca"
+        "id": "52ac776e-5d95-4348-b612-60991d617e2a"
       }
     ],
     "transfers": {

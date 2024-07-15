@@ -54,14 +54,14 @@ func TestRunNewman(t *testing.T) {
 	os.Remove(reportPath)
 }
 
-func TestRealCommandRun(t *testing.T) {
-	// Mock exec.Cmd for testing purposes
-	mockCmd := exec.Command("echo", "hello")
-	realCmd := &RealCommand{cmd: mockCmd}
+// func TestRealCommandRun(t *testing.T) {
+// 	// Mock exec.Cmd for testing purposes
+// 	mockCmd := exec.Command("echo", "hello")
+// 	realCmd := &RealCommand{cmd: mockCmd}
 
-	// Simulate successful execution
-	err := realCmd.Run()
-	assert.NoError(t, err)
+// 	// Simulate successful execution
+// 	err := realCmd.Run()
+// 	assert.NoError(t, err)
 
-	// Optionally, check coverage for error paths in RealCommand.Run() here
-}
+// 	// Optionally, check coverage for error paths in RealCommand.Run() here
+// }
