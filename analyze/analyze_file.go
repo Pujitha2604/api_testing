@@ -69,6 +69,9 @@ func matchEndpoint(handlerEndpoint, newmanEndpoint string) bool {
 }
 
 func extractBasePath(endpoint string) string {
+	if !strings.HasPrefix(endpoint, "/") {
+		endpoint = "/" + endpoint
+	}
 	parts := strings.Split(endpoint, "/")
 	if len(parts) > 1 {
 		return "/" + parts[1]
