@@ -4,16 +4,22 @@ import (
 	"log"
 )
 
+var (
+	getAllGoFilesFunc        = getAllGoFiles
+	analyzeFileForAPIEndpointsFunc = analyzeFileForAPIEndpoints
+	parseNewmanReportFunc    = parseNewmanReport
+	printEndpointsTableFunc  = printEndpointsTable
+)
 
 func Analysis(rootDir string, newmanReportPath string) {
 	allEndpoints := make(map[string]Endpoint)
-	handlerFiles, err := getAllGoFiles(rootDir)
+	handlerFiles, err := getAllGoFilesFunc(rootDir)
 	if err != nil {
 		log.Fatalf("Error retrieving handler files: %v", err)
 	}
 
 	for _, file := range handlerFiles {
-		endpoints := analyzeFileForAPIEndpoints(file)
+		endpoints := analyzeFileForAPIEndpointsFunc(file)
 		for endpoint, endpointDetails := range endpoints {
 			allEndpoints[endpoint] = Endpoint{
 				Method: endpointDetails.Method,
@@ -23,7 +29,7 @@ func Analysis(rootDir string, newmanReportPath string) {
 		}
 	}
 
-	newmanEndpoints, err := parseNewmanReport(newmanReportPath)
+	newmanEndpoints, err := parseNewmanReportFunc(newmanReportPath)
 	if err != nil {
 		log.Fatalf("Error parsing Newman report: %v", err)
 	}
@@ -55,5 +61,5 @@ func Analysis(rootDir string, newmanReportPath string) {
 		}
 	}
 
-	printEndpointsTable(allEndpoints, newmanReportPath)
+	printEndpointsTableFunc(allEndpoints, newmanReportPath)
 }
