@@ -6,7 +6,6 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-// Mock implementations
 type MockFileRetriever struct {
 	mock.Mock
 }
@@ -42,7 +41,6 @@ func (m *MockPrinter) PrintEndpointsTable(allEndpoints map[string]Endpoint, newm
 	m.Called(allEndpoints, newmanReportPath)
 }
 
-// Helper function to set up mocks
 func setUpMocks() (*MockFileRetriever, *MockFileAnalyzer, *MockNewmanParser, *MockPrinter) {
 	fileRetriever := new(MockFileRetriever)
 	fileAnalyzer := new(MockFileAnalyzer)
@@ -57,14 +55,12 @@ func setUpMocks() (*MockFileRetriever, *MockFileAnalyzer, *MockNewmanParser, *Mo
 	return fileRetriever, fileAnalyzer, newmanParser, printer
 }
 
-// Test for the Analysis function
 func TestAnalysis(t *testing.T) {
 	fileRetriever, fileAnalyzer, newmanParser, printer := setUpMocks()
 
 	rootDir := "testDir"
 	newmanReportPath := "testNewmanReport.json"
 
-	// Mock responses
 	fileRetriever.On("GetAllGoFiles", rootDir).Return([]string{"file1.go", "file2.go"}, nil)
 	fileAnalyzer.On("AnalyzeFileForAPIEndpoints", "file1.go").Return(map[string]Endpoint{
 		"/endpoint1": {Method: "GET", Path: "/endpoint1"},
@@ -78,7 +74,6 @@ func TestAnalysis(t *testing.T) {
 	}, nil)
 	printer.On("PrintEndpointsTable", mock.Anything, newmanReportPath).Return()
 
-	// Call the Analysis function
 	Analysis(rootDir, newmanReportPath)
 	
 	fileRetriever.AssertExpectations(t)
@@ -86,3 +81,4 @@ func TestAnalysis(t *testing.T) {
 	newmanParser.AssertExpectations(t)
 	printer.AssertExpectations(t)
 }
+

@@ -2,6 +2,7 @@ package analyze
 
 import (
 	"encoding/json"
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -68,7 +69,7 @@ func TestParseNewmanReport(t *testing.T) {
 	// Call the function
 	endpoints, err := parseNewmanReport("/newman-report.json")
 
-	// Assertions
+	// Assertions for successful parse
 	assert.NoError(t, err)
 	assert.Equal(t, 2, len(endpoints))
 	assert.Equal(t, 200, endpoints["/employee/1"])
@@ -79,6 +80,12 @@ func TestParseNewmanReport(t *testing.T) {
 	_, err = parseNewmanReport("/invalid/json")
 	assert.Error(t, err)
 	assert.Equal(t, "error parsing Newman report JSON: invalid character 'i' looking for beginning of value", err.Error())
+
+	// Test case for file read error
+	mockFS.On("ReadFile", "/nonexistent-file.json").Return(nil, errors.New("file not found"))
+	_, err = parseNewmanReport("/nonexistent-file.json")
+	assert.Error(t, err)
+	assert.Equal(t, "file not found", err.Error())
 
 	mockFS.AssertExpectations(t)
 }
