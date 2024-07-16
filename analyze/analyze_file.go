@@ -38,13 +38,11 @@ func analyzeFileForAPIEndpoints(filename string) map[string]Endpoint {
 								if funHandleFunc, ok := funSelExpr.Fun.(*ast.SelectorExpr); ok {
 									if funHandleFunc.Sel.Name == "HandleFunc" && len(funSelExpr.Args) >= 2 {
 										if pathLit, ok := funSelExpr.Args[0].(*ast.BasicLit); ok {
-											path := strings.Trim(pathLit.Value, "\"")
-											if !strings.HasPrefix(path, "/") {
-												path = "/" + path
-											}
-											endpoints[path] = Endpoint{
+											fullPath := strings.Trim(pathLit.Value, "\"")
+											mainPath := extractBasePath(fullPath)
+											endpoints[mainPath] = Endpoint{
 												Method: method,
-												Path:   path,
+												Path:   mainPath,
 												Result: "Not Compared",
 											}
 										}
