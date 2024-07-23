@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"sai pujistha\",\r\n    \"email\": \"sadsfsfdsa@example.com\",\r\n    \"age\": 22,\r\n    \"phone_number\":\"65006776210\",\r\n    \"work_experience\": 6\r\n}\r\n",
+					"raw": "{\r\n    \"name\": \"sai pujisggtha\",\r\n    \"email\": \"sadsfgfgsfdsa@example.com\",\r\n    \"age\": 21,\r\n    \"phone_number\":\"1234567801\",\r\n    \"work_experience\": 6\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -36,11 +36,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/employee/66960d22c78eb093199a0f25",
+					"raw": "http://localhost:8080/employee/669f7e8cd94ab0c91a6ac4a9",
 					"protocol": "http",
 					"host": ["localhost"],
 					"port": "8080",
-					"path": ["employee", "66960d22c78eb093199a0f25"]
+					"path": ["employee", "669f7e8cd94ab0c91a6ac4a9"]
 				}
 			},
 			"response": []

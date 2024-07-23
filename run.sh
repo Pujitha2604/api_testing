@@ -1,4 +1,4 @@
-HOST_DIR="/home/ec2-user/web-service"
+HOST_DIR="/home/ec2-user/web-service/collection"
 CONTAINER_DIR="/app/files"
  
 echo "Contents of the host directory:"
