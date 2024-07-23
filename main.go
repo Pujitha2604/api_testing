@@ -2,16 +2,14 @@ package main
 
 import (
 	"api_testing/analyze"
-	"log"
-	"os"
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		log.Fatal("Root directory not provided. Usage: go run main.go <rootDir>")
-	}
+	// if len(os.Args) < 2 {
+	// 	log.Fatal("Root directory not provided. Usage: go run main.go <rootDir>")
+	// }
 
-	rootDir := os.Args[1]
+	rootDir := "/home/ec2-user/web-service"
 	//collectionFile := "C:/Users/Rekanto/Desktop/api_testing/collection.json"
 	newmanReportPath := "/home/ec2-user/web-service/collection/newman-report.json"
 
