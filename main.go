@@ -12,12 +12,12 @@ func main() {
 	}
 
 	rootDir := os.Args[1]
-	collectionFile := "C:/Users/Rekanto/Desktop/api_testing/collection.json"
-	newmanReportPath := "C:/Users/Rekanto/Desktop/api_testing/newman-report.json"
+	//collectionFile := "C:/Users/Rekanto/Desktop/api_testing/collection.json"
+	newmanReportPath := "/home/ec2-user/web-service/collection/newman-report.json"
 
-	if err := analyze.RunNewman(collectionFile, newmanReportPath); err != nil {
-		log.Fatalf("Error running Newman: %v", err)
-	}
+	// if err := analyze.RunNewman(collectionFile, newmanReportPath); err != nil {
+	// 	log.Fatalf("Error running Newman: %v", err)
+	// }
 
 	analyze.Analysis(rootDir, newmanReportPath)
 }
