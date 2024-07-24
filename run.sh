@@ -1,10 +1,25 @@
-HOST_DIR="/home/ec2-user/web-service"
-CONTAINER_DIR="/app/files"
- 
-echo "Contents of the host directory:"
-ls -la "$HOST_DIR"
- 
-docker run --rm -v "$HOST_DIR:$CONTAINER_DIR" -v /var/run/docker.sock:/var/run/docker.sock -w "$CONTAINER_DIR" test-tools /bin/bash -c "echo 'Contents of the container directory:' && ls -la $CONTAINER_DIR"
- 
-docker run --rm -v "$HOST_DIR:$CONTAINER_DIR" -v /var/run/docker.sock:/var/run/docker.sock -w "$CONTAINER_DIR" test-tools /bin/bash -c "chmod +x apitests.sh && echo 'Running apitests.sh:' && ./apitests.sh"
+#!/bin/bash
 
+# Load environment variables from mongo_credentials.txt
+while IFS='=' read -r key value; do
+    if [[ -n "$key" && -n "$value" ]]; then
+        export "$key=$value"
+    fi
+done < "/c/Users/Rekanto/Desktop/employee-service/mongo_credentials.txt"
+
+# Start services with Docker Compose
+docker-compose up -d
+
+# Wait for the web service to start
+echo "Waiting for the web service to start..."
+sleep 5
+
+# Run Newman with Docker, mounting the Docker socket and files
+docker run --network host \
+  --name employee-service \
+  -v /c/Users/Rekanto/Desktop/employee-service/collection/:/etc/postman \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -t postman/newman:latest run -r cli,json --reporter-json-export /etc/postman/newman-report.json /etc/postman/collection.json
+
+# Shut down services with Docker Compose
+docker-compose down
