@@ -6,9 +6,9 @@ import (
 
 func main() {
 
-	rootDir := "/home/ec2-user/web-service"
+	rootDir := "/app/files/employee-service"
 	
-	newmanReportPath := "/home/ec2-user/web-service/collection/newman-report.json"
+	newmanReportPath := "/app/files/employee-service/collection/newman-report.json"
 
 	analyze.Analysis(rootDir, newmanReportPath)
 }
